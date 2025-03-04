@@ -13,7 +13,7 @@ The Library Management System is a console-based application designed to manage 
 ## Installation
 1. Clone the repository:
    ```sh
-   git clone <repository_url>
+   git clone git clone https://github.com/yourusername/Lib_Manage.git
    cd library-management-system
    ```
 
