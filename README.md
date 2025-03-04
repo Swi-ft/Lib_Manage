@@ -17,12 +17,7 @@ The Library Management System is a console-based application designed to manage 
    cd library-management-system
    ```
 
-2. Build the project (if source code is available):
-   ```sh
-   g++ -o main main.cpp -std=c++11
-   ```
-
-3. Run the executable:
+2. Run the executable:
    ```sh
    ./main.exe  # On Windows
    ./main      # On Linux/macOS
