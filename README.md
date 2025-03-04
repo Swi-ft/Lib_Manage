@@ -17,7 +17,7 @@ The Library Management System is a console-based application designed to manage 
    cd library-management-system
    ```
 
-2. Run the executable:
+2. Run the executable (which is present in the code folder):
    ```sh
    ./main.exe  # On Windows
    ./main      # On Linux/macOS
@@ -26,12 +26,8 @@ The Library Management System is a console-based application designed to manage 
 ## Usage
 - Run the application and follow the prompts to borrow or return books.
 - The system will automatically track fines for overdue books.
-- All data is stored persistently using file I/O.
+- All data is stored persistently using file I/O (in the library_data.txt file).
 
-## Future Enhancements
-- Implement a graphical user interface (GUI)
-- Add support for book reservations
-- Enhance reporting and analytics
 
 ## License
 This project is licensed under the MIT License.
