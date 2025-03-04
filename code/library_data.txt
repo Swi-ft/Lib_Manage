@@ -1,0 +1,11 @@
+Books
+Concepts of Physics,HC Verma,ISBN1,2001,1
+Java,Ranjit,ISBN2,2005,1
+Students
+Sai,StudPass1,0,0
+Tanvi,StudPass2,0,0
+Faculty
+Ranjit,FacPass1,0
+Anjani,FacPass2,0
+Librarians
+Indranil,LibPass1
