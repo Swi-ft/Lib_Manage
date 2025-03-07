@@ -1,11 +1,13 @@
 Books
-Concepts of Physics,HC Verma,ISBN1,2001,1
-Java,Ranjit,ISBN2,2005,1
+Java,Ranjit,12,2005,1,
+Python,Authore,123,2002,0,F1
+CPP,Him,1234,2008,0,S1
+R,Vats,12345,2010,0,F1
 Students
-Sai,StudPass1,0,0
-Tanvi,StudPass2,0,0
+S2,StudPass2,0,0,0
+S1,StudPass1,0,1,CPP,1741335228,0
 Faculty
-Ranjit,FacPass1,0
-Anjani,FacPass2,0
+F2,FacPass2,0,0
+F1,FacPass1,2,R,1741335266,Python,1741335269,0
 Librarians
 Indranil,LibPass1

@@ -17,9 +17,10 @@ public:
     Faculty(std::string name, std::string password);
 
     void borrow(std::string book, std::time_t l, Library *lib);
-    void return_book(std::string book, Library *lib);
+    void return_book(std::string book, Library *lib, std::time_t l);
     void no_of_books();
     void show_books_borrowed();
+    void check_history();
 
 private:
     std::time_t get_current_time();

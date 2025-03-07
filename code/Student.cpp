@@ -18,6 +18,7 @@ void Student::borrow(std::string b, std::time_t l, Library *lib) {
                 this->acc.books.push_back(book);
                 this->acc.borrow_date.push_back(l);
                 book->avail = 0;
+                book->owner = this->name;
                 std::cout << "Book " << book->title << " taken by " << this->name << "!" << std::endl;
             } else {
                 std::cout << "Book not Available" << std::endl;
@@ -51,11 +52,12 @@ void Student::return_book(std::string book, std::time_t l, Library *lib) {
             if (days > 15) {
                 this->acc.fine += (10 * (days - 15) + 150);
             }
-
             this->acc.books.erase(it);
+            this->acc.push_book_history(b, *(this->acc.borrow_date.begin() + index), l);
             this->acc.borrow_date.erase(this->acc.borrow_date.begin() + index);
             std::cout << "Returned " << b->title << " successfully!" << std::endl;
             b->avail = 1;
+            b->owner = "";
         }
     } else {
         std::cout << "Wrong Book Name!" << std::endl;
@@ -69,6 +71,10 @@ void Student::check_fine(std::time_t l) {
 
 void Student::no_of_books() {
     std::cout << "Total books borrowed: " << this->acc.books.size() << std::endl;
+}
+
+void Student::check_history(){
+    this->acc.check_history();
 }
 
 void Student::show_books_borrowed() {

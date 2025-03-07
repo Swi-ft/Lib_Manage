@@ -77,3 +77,7 @@ Student *Librarian::get_student(std::string x) {
 Faculty *Librarian::get_faculty(std::string x) {
     return lib->get_faculty(x);
 }
+
+void Librarian::view_library(){
+    lib->view_library();
+}

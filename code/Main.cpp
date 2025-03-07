@@ -42,9 +42,9 @@ int main()
 void runApp(Library *lib)
 {
     int type;
-    std::cout << "Are you a 1.Student 2.Faculty 3.Librarian or 4.Close App?" << std::endl;
+    std::cout << "Login in as :\n1.Student\n2.Faculty\n3.Librarian\nor\n4.Close App?" << std::endl;
     std::cin >> type;
-    std::cin.ignore(); // Clear buffer
+    std::cin.ignore();
 
     std::string name, password;
     if (type == 1 || type == 2 || type == 3)
@@ -84,7 +84,7 @@ void runApp(Library *lib)
 void studentApp(Library *lib, Student *s)
 {
     int next;
-    std::cout << "1. Borrow a Book, 2. Return a Book, 3. Check Fines, 4. Clear Fines, 5. Check Books, 6. Log-Out?" << std::endl;
+    std::cout << "1. Borrow a Book\n2. Return a Book\n3. Check Fines\n4. Clear Fines\n5. Check Books\n6. Check History\n7. Log-Out?" << std::endl;
     std::cin >> next;
     std::cin.ignore();
     if (next == 1)
@@ -123,6 +123,10 @@ void studentApp(Library *lib, Student *s)
     }
     else if (next == 6)
     {
+        s->check_history();
+    }
+    else if (next == 7)
+    {
         runApp(lib);
         return;
     }
@@ -136,7 +140,7 @@ void studentApp(Library *lib, Student *s)
 void facultyApp(Library *lib, Faculty *f)
 {
     int next;
-    std::cout << "1. Borrow a Book, 2. Return a Book, 3. Check Books, 4. Log-Out?" << std::endl;
+    std::cout << "1. Borrow a Book\n2. Return a Book\n3. Check Books\n4. Check History\n5. Log-Out?" << std::endl;
     std::cin >> next;
     std::cin.ignore();
     if (next == 1)
@@ -153,13 +157,17 @@ void facultyApp(Library *lib, Faculty *f)
         f->show_books_borrowed();
         std::cout << "Enter Book name: ";
         std::getline(std::cin, book);
-        f->return_book(book, lib);
+        f->return_book(book, lib, get_current_date());
     }
     else if (next == 3)
     {
         f->show_books_borrowed();
     }
     else if (next == 4)
+    {
+        f->check_history();
+    }
+    else if (next == 5)
     {
         runApp(lib);
         return;
@@ -174,7 +182,7 @@ void facultyApp(Library *lib, Faculty *f)
 void libApp(Library *lib, Librarian *l)
 {
     int next;
-    std::cout << "1. Add Book, 2. Remove Book, 3. Add Student, 4. Remove Student, 5. Add Faculty, 6. Remove Faculty, 7. Add Librarian, 8. Log-Out?" << std::endl;
+    std::cout << "1. Add Book\n2. Remove Book\n3. Add Student\n4. Remove Student\n5. Add Faculty\n6. Remove Faculty\n7. Add Librarian\n8. View Library\n9. Log-Out?" << std::endl;
     std::cin >> next;
     std::cin.ignore();
     if (next == 1)
@@ -244,6 +252,9 @@ void libApp(Library *lib, Librarian *l)
         l->add_librarian(name, password);
     }
     else if(next == 8){
+        lib->view_library();
+    }
+    else if(next == 9){
         runApp(lib);
         return;
     }

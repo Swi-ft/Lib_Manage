@@ -108,6 +108,20 @@ void Library::add_faculty(Faculty *f) {
     faculty.push_back(f);
 }
 
+
+void Library::view_library(){
+    for(Book *book : books){
+        if(book->avail == 1){
+            std::cout << book->title << " by " << book->author << " is " <<"Available\n";
+        }
+        else{
+            std::cout << book->title << " by " << book->author << " is " <<"Owned by : " << book->owner << "\n";
+        }
+    }
+}
+
+
+
 void Library::remove_book(std::string title) {
     auto it = std::remove_if(books.begin(), books.end(), [&](Book *book) {
         return book->title == title;
@@ -164,7 +178,7 @@ void Library::save_data() {
     }
     file << "Books\n";
     for (Book *b : books) {
-        file << b->title << "," << b->author << "," << b->ISBN  << "," << b->year << ","<< b->avail  <<"\n";
+        file << b->title << "," << b->author << "," << b->ISBN  << "," << b->year << ","<< b->avail << "," << b->owner <<"\n";
     }
     file << "Students\n";
     for (Student *s : students) {
@@ -177,6 +191,11 @@ void Library::save_data() {
         file << "," << borrowedBooks.size();
         for (size_t i = 0; i < borrowedBooks.size(); i++) {
             file << "," << borrowedBooks[i]->title << "," << borrowDates[i];
+        }
+        int x = acc.borrow_history_books.size();
+        file << "," << x;
+        for (int i = 0; i < x; i++) {
+            file << "," << acc.borrow_history_books[i]->title << "," << acc.borrow_history_taken_time[i] << "," << acc.borrow_history_return_time[i];
         }
         file << "\n";
     }
@@ -192,6 +211,11 @@ void Library::save_data() {
         for (size_t i = 0; i < borrowedBooks.size(); i++) {
             file << "," << borrowedBooks[i]->title << "," << borrowDates[i];
         }
+        int x = acc.borrow_history_books.size();
+        file << "," << x;
+        for (int i = 0; i < x; i++) {
+            file << "," << acc.borrow_history_books[i]->title << "," << acc.borrow_history_taken_time[i] << "," << acc.borrow_history_return_time[i];
+        }
         file << "\n";
     }
     file << "Librarians\n";
@@ -199,7 +223,7 @@ void Library::save_data() {
         file << l->name << "," << l->password << "\n";
     }
     file.close();
-    std::cout << "Data saved successfully.\n";
+    std::cout << "Thank you for using LMS\n";
 }
 
 void Library::load_data() {
@@ -217,7 +241,7 @@ void Library::load_data() {
         else if (line == "Librarians") section = "Librarians";
         else {
             std::stringstream ss(line);
-            std::string name, id, password;
+            std::string name, id, password, owner;
             int year;
             int avail;
             if (section == "Books") {
@@ -228,13 +252,21 @@ void Library::load_data() {
                 ss >> year;
                 ss.ignore();
                 ss >> avail;
-                books.push_back(new Book(name, author, year, isbn, avail));
+                if(avail == 1){
+                    books.push_back(new Book(name, author, year, isbn, avail));
+                    ss.ignore();
+                }
+                else{
+                    ss.ignore();
+                    getline(ss, owner);
+                    books.push_back(new Book(name, author, year, isbn, avail, owner));
+                }
             } 
             else if (section == "Faculty") {
                 getline(ss, name, ',');
                 getline(ss, password, ',');
                 Faculty *facultyMember = new Faculty(name, password);
-                int numBorrowed;
+                int numBorrowed, histBorrowed;
                 ss >> numBorrowed;
                 ss.ignore();
 
@@ -243,12 +275,30 @@ void Library::load_data() {
                     std::time_t borrowDate;
                     getline(ss, bookTitle, ',');
                     ss >> borrowDate;
+                    ss.ignore();
                     Book *borrowedBook = get_book(bookTitle);
                     if (borrowedBook) {
                         facultyMember->acc.books.push_back(borrowedBook);
                         facultyMember->acc.borrow_date.push_back(borrowDate);
                     }
                 }
+                ss >> histBorrowed;
+                ss.ignore();
+
+                for (int i = 0; i < histBorrowed; i++) {
+                    std::string bookTitle;
+                    std::time_t borrowDate;
+                    std::time_t returnDate;
+                    getline(ss, bookTitle, ',');
+                    ss >> borrowDate;
+                    ss.ignore();
+                    ss >> returnDate;
+                    Book *borrowedBook = get_book(bookTitle);
+                    if (borrowedBook) {
+                        facultyMember->acc.push_book_history(borrowedBook, borrowDate, returnDate);
+                    }
+                }
+
                 if (section == "Faculty") {
                     faculty.push_back(facultyMember);
                 }
@@ -260,7 +310,7 @@ void Library::load_data() {
                 ss >> fineAmount;
                 ss.ignore();
                 Student *S = new Student(name, password);
-                int numBorrowed;
+                int numBorrowed, histBorrowed;
                 ss >> numBorrowed;
                 ss.ignore();
 
@@ -276,6 +326,24 @@ void Library::load_data() {
                         S->acc.borrow_date.push_back(borrowDate);
                     }
                 }
+
+                ss >> histBorrowed;
+                ss.ignore();
+
+                for (int i = 0; i < histBorrowed; i++) {
+                    std::string bookTitle;
+                    std::time_t borrowDate;
+                    std::time_t returnDate;
+                    getline(ss, bookTitle, ',');
+                    ss >> borrowDate;
+                    ss.ignore();
+                    ss >> returnDate;
+                    Book *borrowedBook = get_book(bookTitle);
+                    if (borrowedBook) {
+                        S->acc.push_book_history(borrowedBook, borrowDate, returnDate);
+                    }
+                }
+
                 S->acc.fine = fineAmount;
                 if (section == "Students") {
                     students.push_back(S);
@@ -290,5 +358,5 @@ void Library::load_data() {
     }
 
     file.close();
-    std::cout << "Data loaded successfully.\n";
+    std::cout << "Welcome to the LMS App\n";
 }

@@ -26,6 +26,7 @@ public:
     void add_faculty(const std::string x, const std::string password);
     void add_librarian(const std::string x, const std::string password);
     void add_book(const std::string title, const std::string author, int year, const std::string ISBN);
+    void view_library();
 
     void remove_student(const std::string x);
     void remove_faculty(const std::string x);

@@ -30,6 +30,7 @@ public:
     void add_student(Student *s);
     void add_librarian(Librarian *l);
     void add_faculty(Faculty *f);
+    void view_library();
 
     void remove_book(std::string title);
     void remove_student(std::string name);

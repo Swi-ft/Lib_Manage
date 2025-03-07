@@ -25,6 +25,7 @@ public:
     void check_fine(std::time_t l);
     void no_of_books();
     void show_books_borrowed();
+    void check_history();
 
 private:
     std::time_t get_current_date();
