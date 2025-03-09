@@ -25,9 +25,9 @@ int Account::check_fine(std::time_t current_date) {
         int x = 0;
         int n = books.size();
         for (int i = 0; i < n; i++) {
-            double days = std::difftime(current_date, borrow_date[i]) / (60 * 60 * 24);
+            int days = (int) (std::difftime(current_date, borrow_date[i]) / (60 * 60 * 24));
             if (days > 15) {
-                x += 150 + static_cast<int>(10 * (days - 15));
+                x = x + (10 * (days - 15));
             }
         }
         return x + fine;
