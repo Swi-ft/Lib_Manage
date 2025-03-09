@@ -21,6 +21,8 @@ public:
     void no_of_books();
     void show_books_borrowed();
     void check_history();
+    void reserve_book(std::string b, Library *lib);
+    void show_lib_pub(Library* lib);
 
 private:
     std::time_t get_current_time();

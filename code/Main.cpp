@@ -84,13 +84,13 @@ void runApp(Library *lib)
 void studentApp(Library *lib, Student *s)
 {
     int next;
-    std::cout << "1. Borrow a Book\n2. Return a Book\n3. Check Fines\n4. Clear Fines\n5. Check Books\n6. Check History\n7. Log-Out?" << std::endl;
+    std::cout << "1. Borrow a Book\n2. Return a Book\n3. Check Fines\n4. Clear Fines\n5. Check Books\n6. Check History\n7. Reserve Book\n8. Log-Out?" << std::endl;
     std::cin >> next;
     std::cin.ignore();
     if (next == 1)
     {
         std::string book;
-        lib->show_avail_books();
+        lib->show_avail_books(s->name);
         std::cout << "Enter Book name: ";
         std::getline(std::cin, book);
         s->borrow(book, get_current_date(), lib);
@@ -125,7 +125,14 @@ void studentApp(Library *lib, Student *s)
     {
         s->check_history();
     }
-    else if (next == 7)
+    else if(next == 7){
+        std::string book;
+        s->show_lib_pub(lib);
+        std::cout << "Enter which book you would like to reserve : ";
+        std::getline(std::cin, book);
+        s->reserve_book(book, lib);
+    }
+    else if (next == 8)
     {
         runApp(lib);
         return;
@@ -140,13 +147,13 @@ void studentApp(Library *lib, Student *s)
 void facultyApp(Library *lib, Faculty *f)
 {
     int next;
-    std::cout << "1. Borrow a Book\n2. Return a Book\n3. Check Books\n4. Check History\n5. Log-Out?" << std::endl;
+    std::cout << "1. Borrow a Book\n2. Return a Book\n3. Check Books\n4. Check History\n5. Reserve Book\n6. Log-Out?" << std::endl;
     std::cin >> next;
     std::cin.ignore();
     if (next == 1)
     {
         std::string book;
-        lib->show_avail_books();
+        lib->show_avail_books(f->name);
         std::cout << "Enter Book name: ";
         std::getline(std::cin, book);
         f->borrow(book, get_current_date(), lib);
@@ -167,7 +174,14 @@ void facultyApp(Library *lib, Faculty *f)
     {
         f->check_history();
     }
-    else if (next == 5)
+    else if(next == 5){
+        std::string book;
+        f->show_lib_pub(lib);
+        std::cout << "Enter which book you would like to reserve : ";
+        std::getline(std::cin, book);
+        f->reserve_book(book, lib);
+    }
+    else if (next == 6)
     {
         runApp(lib);
         return;

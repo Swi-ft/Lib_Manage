@@ -20,11 +20,45 @@ void Student::borrow(std::string b, std::time_t l, Library *lib) {
                 book->avail = 0;
                 book->owner = this->name;
                 std::cout << "Book " << book->title << " taken by " << this->name << "!" << std::endl;
-            } else {
+            }
+            else if(book->avail == 2 && (book->reserved_by == this->name)){
+                this->acc.books.push_back(book);
+                this->acc.borrow_date.push_back(l);
+                book->avail = 0;
+                book->owner = this->name;
+                (this->acc.reserved)--;
+                book->reserved_by = "";
+                std::cout << "Book " << book->title << " taken by " << this->name << "!" << std::endl;
+            }
+            else {
                 std::cout << "Book not Available" << std::endl;
             }
-        } else {
-            std::cout << "Wrong Book Name!" << std::endl;
+        }
+    }
+}
+
+
+void Student::show_lib_pub(Library* lib){
+    lib->view_library_public();
+}
+
+void Student::reserve_book(std::string s, Library* lib){
+    Book* b = lib->get_book(s);
+    int x = this->acc.reserved;
+    if(x >= 2){
+        std::cout << "You have already reserved 3 books. You can't reserved anymore books!\n";
+    }
+    else{
+        if(b != nullptr){
+            if(b->avail == 1 || b->avail == 0){
+                std::cout << b->title << " has been resereved\n";
+                (this->acc.reserved)++;
+                b->avail = 2;
+                b->reserved_by = this->name;
+            }
+            else if(b->avail == 2){
+                std::cout << "This book has already been reserved!\n";
+            }
         }
     }
 }
@@ -56,7 +90,9 @@ void Student::return_book(std::string book, std::time_t l, Library *lib) {
             this->acc.push_book_history(b, *(this->acc.borrow_date.begin() + index), l);
             this->acc.borrow_date.erase(this->acc.borrow_date.begin() + index);
             std::cout << "Returned " << b->title << " successfully!" << std::endl;
-            b->avail = 1;
+            if(b->avail == 0){
+                b->avail = 1;
+            }
             b->owner = "";
         }
     } else {

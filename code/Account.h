@@ -12,9 +12,11 @@ public:
     std::vector<Book *> borrow_history_books;
     std::vector<std::time_t> borrow_history_taken_time;
     std::vector<std::time_t> borrow_history_return_time;
+    int reserved;
     int fine;
 
     Account();
+    Account(int fine, int reserved);
 
     void add_book(Book *b);
     void push_book(Book *b, std::time_t curr_date);

@@ -17,7 +17,17 @@ void Faculty::borrow(std::string book, std::time_t l, Library *lib) {
                 b->avail = 0;
                 b->owner = this->name;
                 std::cout << "Book " << b->title << " Taken by " << this->name << "!" << std::endl;
-            } else {
+            }
+            else if(b->avail == 2 && (b->reserved_by == this->name)){
+                this->acc.books.push_back(b);
+                this->acc.borrow_date.push_back(l);
+                b->avail = 0;
+                b->owner = this->name;
+                std::cout << "Book " << b->title << " Taken by " << this->name << "!" << std::endl;
+                this->acc.reserved--;
+                b->reserved_by = "";
+            }
+            else {
                 std::cout << "Book not Available" << std::endl;
             }
         } else if (days_between(l, *std::min_element(this->acc.borrow_date.begin(), this->acc.borrow_date.end())) > 30) {
@@ -29,12 +39,20 @@ void Faculty::borrow(std::string book, std::time_t l, Library *lib) {
                 b->avail = 0;
                 b->owner = this->name;
                 std::cout << "Book " << b->title << " Taken by " << this->name << "!" << std::endl;
-            } else {
+            }
+            else if(b->avail == 2 && (b->reserved_by ==  this->name)){
+                this->acc.books.push_back(b);
+                this->acc.borrow_date.push_back(get_current_time());
+                b->avail = 0;
+                b->owner = this->name;
+                std::cout << "Book " << b->title << " Taken by " << this->name << "!" << std::endl;
+                this->acc.reserved--;
+                b->reserved_by = "";
+            }
+            else {
                 std::cout << "Book not Available" << std::endl;
             }
         }
-    } else {
-        std::cout << "Wrong Book Name!" << std::endl;
     }
 }
 
@@ -53,7 +71,9 @@ void Faculty::return_book(std::string book, Library *lib, std::time_t l) {
             this->acc.books.erase(it);
             this->acc.push_book_history(b, *(this->acc.borrow_date.begin() + index), l);
             this->acc.borrow_date.erase(this->acc.borrow_date.begin() + index);
-            b->avail = 1;
+            if(b->avail == 0){
+                b->avail = 1;
+            }
             b->owner = "";
             std::cout << "Returned " << b->title << " successfully!" << std::endl;
         }
@@ -77,6 +97,34 @@ void Faculty::show_books_borrowed() {
         std::cout << std::endl;
     }
 }
+
+
+void Faculty::show_lib_pub(Library* lib){
+    lib->view_library_public();
+}
+
+void Faculty::reserve_book(std::string s, Library* lib){
+    Book* b = lib->get_book(s);
+    int x = this->acc.reserved;
+    if(x >= 2){
+        std::cout << "You have already reserved 3 books. You can't reserved anymore books!\n";
+    }
+    else{
+        if(b != nullptr){
+            if(b->avail == 1 || b->avail == 0){
+                std::cout << b->title << " has been resereved\n";
+                this->acc.reserved++;
+                b->avail = 2;
+                b->reserved_by = this->name;
+            }
+            else if(b->avail == 2){
+                std::cout << "This book has already been reserved!\n";
+            }
+        }
+    }
+}
+
+
 
 std::time_t Faculty::get_current_time() {
     return std::time(nullptr);

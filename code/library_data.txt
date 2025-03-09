@@ -1,13 +1,24 @@
 Books
-Java,Ranjit,12,2005,1,
-Python,Authore,123,2002,0,F1
-CPP,Him,1234,2008,0,S1
-R,Vats,12345,2010,0,F1
+CS Basics,Michael Sipser,23456,2012,1,,
+AI Fundamentals,Stuart Russell,34567,2020,1,,
+Networks,James Kurose,45678,2017,1,,
+Design Patterns,Erich Gamma,56789,1994,1,,
+Clean Code,Robert Martin,67890,2008,1,,
+OS Concepts,Abraham Silberschatz,78901,2018,1,,
+Algo Basics,Thomas Cormen,89012,2009,1,,
+DBMS Guide,Raghu Ramakrishnan,90123,2014,1,,
+Linux Internals,Daniel Bovet,01234,2005,1,,
+Web Dev,Jon Duckett,12346,2011,1,,
 Students
-S2,StudPass2,0,0,0
-S1,StudPass1,0,1,CPP,1741335228,0
+S1,StudPass1,0,0,0,1,CS Basics,1741497469,1741498011
+S2,StudPass2,0,0,0,1,Web Dev,1741500997,1741501017
+S3,StudPass3,0,0,0,0
+S4,StudPass4,0,0,0,1,Web Dev,1741500087,1741500108
+S5,StudPass5,0,0,0,0
 Faculty
-F2,FacPass2,0,0
-F1,FacPass1,2,R,1741335266,Python,1741335269,0
+F1,FacPass1,0,0,0
+F2,FacPass2,0,0,0
+F3,FacPass3,0,0,0
+F4,FacPass4,0,0,0
 Librarians
 Indranil,LibPass1

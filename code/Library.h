@@ -31,12 +31,14 @@ public:
     void add_librarian(Librarian *l);
     void add_faculty(Faculty *f);
     void view_library();
+    void view_library_public();
 
     void remove_book(std::string title);
     void remove_student(std::string name);
     void remove_faculty(std::string name);
 
     void show_avail_books();
+    void show_avail_books(std::string name);
 
     void save_data();
     void load_data();

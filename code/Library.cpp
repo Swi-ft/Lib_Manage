@@ -121,6 +121,21 @@ void Library::view_library(){
 }
 
 
+void Library::view_library_public(){
+    for(Book *book : books){
+        if(book->avail == 1){
+            std::cout << book->title << " by " << book->author << " is " <<"Available to borrow\n";
+        }
+        else if(book->avail == 0){
+            std::cout << book->title << " by " << book->author << " is " <<"Not Available but can be reserved" << "\n";
+        }
+        else{
+            std::cout << book->title << " by " << book->author << " is " <<"Not Available and can't be reserved" << "\n";
+        }
+    }
+}
+
+
 
 void Library::remove_book(std::string title) {
     auto it = std::remove_if(books.begin(), books.end(), [&](Book *book) {
@@ -169,6 +184,21 @@ void Library::show_avail_books() {
     std::cout << std::endl;
 }
 
+void Library::show_avail_books(std::string name) {
+    int count = 1;
+    for (Book *book : books) {
+        if (book->avail == 1) {
+            std::cout << count << ". " << book->title << " ";
+            count++;
+        }
+        else if(book->avail == 2 && (book->reserved_by == name)){
+            std::cout << count << ". " << book->title << " ";
+            count++;
+        }
+    }
+    std::cout << std::endl;
+}
+
 
 void Library::save_data() {
     std::ofstream file("library_data.txt");
@@ -178,12 +208,12 @@ void Library::save_data() {
     }
     file << "Books\n";
     for (Book *b : books) {
-        file << b->title << "," << b->author << "," << b->ISBN  << "," << b->year << ","<< b->avail << "," << b->owner <<"\n";
+        file << b->title << "," << b->author << "," << b->ISBN  << "," << b->year << ","<< b->avail << "," << b->owner << "," << b->reserved_by <<"\n";
     }
     file << "Students\n";
     for (Student *s : students) {
         Account acc = s->acc;
-        file << s->name << "," << s->password << "," << acc.fine;
+        file << s->name << "," << s->password << "," << acc.fine << "," << acc.reserved;
 
         auto &borrowedBooks = acc.books;
         auto &borrowDates = acc.borrow_date;
@@ -202,7 +232,7 @@ void Library::save_data() {
     file << "Faculty\n";
     for (Faculty *f : faculty) {
         Account acc = f->acc;
-        file << f->name << "," << f->password;
+        file << f->name << "," << f->password << "," << acc.reserved;
 
         auto &borrowedBooks = acc.books;
         auto &borrowDates = acc.borrow_date;
@@ -241,8 +271,8 @@ void Library::load_data() {
         else if (line == "Librarians") section = "Librarians";
         else {
             std::stringstream ss(line);
-            std::string name, id, password, owner;
-            int year;
+            std::string name, id, password, owner, reserved_by;
+            int year, reserved;
             int avail;
             if (section == "Books") {
                 std::string author, isbn;
@@ -255,16 +285,25 @@ void Library::load_data() {
                 if(avail == 1){
                     books.push_back(new Book(name, author, year, isbn, avail));
                     ss.ignore();
+                    ss.ignore();
+                }
+                else if(avail == 2){
+                    ss.ignore();
+                    getline(ss, owner, ',');
+                    getline(ss, reserved_by, ',');
+                    books.push_back(new Book(name, author, year, isbn, avail, owner, reserved_by));
                 }
                 else{
                     ss.ignore();
-                    getline(ss, owner);
+                    getline(ss, owner, ',');
                     books.push_back(new Book(name, author, year, isbn, avail, owner));
                 }
             } 
             else if (section == "Faculty") {
                 getline(ss, name, ',');
                 getline(ss, password, ',');
+                ss >> reserved;
+                ss.ignore();
                 Faculty *facultyMember = new Faculty(name, password);
                 int numBorrowed, histBorrowed;
                 ss >> numBorrowed;
@@ -298,7 +337,7 @@ void Library::load_data() {
                         facultyMember->acc.push_book_history(borrowedBook, borrowDate, returnDate);
                     }
                 }
-
+                facultyMember->acc.reserved = reserved;
                 if (section == "Faculty") {
                     faculty.push_back(facultyMember);
                 }
@@ -308,6 +347,8 @@ void Library::load_data() {
                 getline(ss, name, ',');
                 getline(ss, password, ',');
                 ss >> fineAmount;
+                ss.ignore();
+                ss >> reserved;
                 ss.ignore();
                 Student *S = new Student(name, password);
                 int numBorrowed, histBorrowed;
@@ -345,6 +386,7 @@ void Library::load_data() {
                 }
 
                 S->acc.fine = fineAmount;
+                S->acc.reserved = reserved;
                 if (section == "Students") {
                     students.push_back(S);
                 }

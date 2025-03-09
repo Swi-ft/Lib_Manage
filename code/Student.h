@@ -10,7 +10,6 @@
 #include "Book.h"
 #include "Library.h"
 
-// Forward declaration of Library to prevent circular dependency
 class Library;
 
 class Student : public User {
@@ -26,6 +25,8 @@ public:
     void no_of_books();
     void show_books_borrowed();
     void check_history();
+    void reserve_book(std::string b, Library *lib);
+    void show_lib_pub(Library* lib);
 
 private:
     std::time_t get_current_date();

@@ -3,6 +3,11 @@
 
 Account::Account() {
     fine = 0;
+    reserved = 0;
+}
+Account::Account(int fine, int reserved){
+    this->fine = fine;
+    this->reserved = reserved;
 }
 
 void Account::add_book(Book *b) {
